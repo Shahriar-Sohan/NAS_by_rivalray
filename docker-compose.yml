@@ -1,0 +1,30 @@
+version: '3.9'
+services:
+  backend:
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    volumes:
+      - .:/app
+    networks:
+      - nasnet
+
+  db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: drogon
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: nasdb
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./temp_nas_storage:/app/temp_nas_storage
+    networks:
+      - nasnet
+
+volumes:
+  pgdata:
+
+networks:
+  nasnet:
